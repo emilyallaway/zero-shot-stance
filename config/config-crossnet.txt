@@ -1,0 +1,12 @@
+name:CTSAN_t3
+ckp_path:../checkpoints/
+res_path:../data/
+vec_name:glove.6B.100d
+vec_dim:100
+b:64
+epochs:100
+h:68
+lr:0.00118168557993075
+a:100
+lh:48
+dropout:0.36954545196802335

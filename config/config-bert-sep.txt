@@ -1,0 +1,13 @@
+name:ffnn-bert-sep_t9
+ckp_path:../checkpoints/
+res_path:../data/
+max_top_len:5
+epochs:20
+together_in:0
+add_resid:1
+max_sen_len:10
+b:64
+bert:yes
+max_tok_len:200
+in_dropout:0.22139772968435562
+hidden_size:633

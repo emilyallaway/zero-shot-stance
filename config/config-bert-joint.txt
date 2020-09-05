@@ -1,0 +1,11 @@
+name:ffnn-bert-joint_t4
+ckp_path:../checkpoints/
+res_path:../data/
+max_tok_len:200
+epochs:20
+b:64
+max_top_len:20
+fine-tune:no
+together_in:1
+in_dropout:0.20463604390811982
+hidden_size:283

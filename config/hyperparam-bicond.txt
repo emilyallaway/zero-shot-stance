@@ -1,0 +1,17 @@
+dir_name:BiCond
+num_search_trials:20
+name:BiCond
+tune_params:h,lr,dropout
+b:64
+epochs:100
+vec_dim:100
+vec_name:glove.6B.100d
+h_range:40-100
+h_algo:uniform-integer
+h_type:int
+lr_range:0.001-0.01
+lr_algo:loguniform
+lr_type:float
+dropout_range:0.1-0.5
+dropout_algo:uniform-float
+dropout_type:float

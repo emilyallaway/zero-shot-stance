@@ -1,0 +1,10 @@
+name:BiCond_t0
+ckp_path:../checkpoints/
+res_path:../data/
+b:64
+vec_name:glove.6B.100d
+epochs:100
+vec_dim:100
+h:78
+lr:0.004514020306243207
+dropout:0.4850254141775727

@@ -1,0 +1,16 @@
+dir_name:ffnn-bert-joint
+num_search_trials:10
+name:ffnn-bert-joint
+tune_params:in_dropout,hidden_size
+b:64
+epochs:20
+fine-tune:no
+max_tok_len:200
+max_top_len:20
+together_in:1
+hidden_size_range:200-800
+hidden_size_algo:uniform-integer
+hidden_size_type:int
+in_dropout_range:0.1-0.4
+in_dropout_algo:uniform-float
+in_dropout_type:float
