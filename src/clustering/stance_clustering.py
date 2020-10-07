@@ -9,6 +9,8 @@ from sklearn.metrics.pairwise import euclidean_distances
 
 import matplotlib.pyplot as plt
 
+from IPython import embed
+
 import sys
 import pickle
 
@@ -42,6 +44,56 @@ def get_features(corpus):
         word2idf[w] = vectorizer.idf_[i]
     return word2idf
 
+def combine_word_piece_tokens(word_toks, word2tfidf):
+    # join the BERT word-piece tokens
+    new_word_toks = []
+    for tok_lst in word_toks:
+        word2pieces = dict()
+        i = 0
+        new_tok_lst = []
+        while i < len(tok_lst):
+            w = tok_lst[i]
+            if not w.startswith('##'):
+                new_tok_lst.append(w)
+            else:
+                old_word = new_tok_lst.pop(-1)
+                new_w = old_word + w.strip("##")
+                new_tok_lst.append(new_w)
+
+                word2pieces[new_w] = [old_word, w]
+            i += 1
+        new_word_toks.append(new_tok_lst)
+
+        for w, p_lst in word2pieces.items():
+            if w not in word2tfidf:
+                continue
+
+            all_pieces = [p_lst[1]]
+            wp = p_lst[0]
+            while wp in word2pieces:
+                all_pieces.append(word2pieces[wp][1])
+                wp = word2pieces[wp][0]
+            all_pieces.append(wp)
+
+            for wp in all_pieces:
+                if wp not in word2tfidf:
+                    word2tfidf[wp] = word2tfidf[w]
+
+    return new_word_toks
+
+
+def get_tfidf_weights(new_word_toks, vecs, word2tfidf):
+    tfidf_lst = []
+    for toklst in new_word_toks:  # word_toks:
+        temp = []
+        for w in toklst:
+            temp.append(word2tfidf.get(w, 0.))
+        # temp = [word2tfidf[w] for w in toklst if w in word2tfidf]
+        while len(temp) < vecs.shape[1]:  # padding to maxlen
+            temp.append(0)
+        tfidf_lst.append(temp)
+    return tfidf_lst
+
 
 def save_bert_vectors(embed_model, dataloader, batching_fn, batching_kwargs, word2tfidf, dataname):
     doc_matrix = []
@@ -56,18 +108,17 @@ def save_bert_vectors(embed_model, dataloader, batching_fn, batching_kwargs, wor
             embed_args = embed_model(**args)
             args.update(embed_args)
 
-            vecs = args['txt_E'] #(B, L, 768)
+            vecs = args['txt_E']  # (B, L, 768)
             word_toks = [dataloader.data.tokenizer.convert_ids_to_tokens(args['text'][i],
                                                                          skip_special_tokens=True)
                          for i in range(args['text'].shape[0])]
-            tfidf_lst = []
-            for toklst in word_toks:
-                temp = [word2tfidf[w] for w in toklst if w in word2tfidf]
-                while len(temp) < vecs.shape[1]:
-                    temp.append(0)
-                tfidf_lst.append(temp)
 
-            tfidf_weights = torch.tensor(tfidf_lst, device=('cuda' if use_cuda else 'cpu')) #(B, L)
+            # join the BERT word-piece tokens
+            new_word_toks = combine_word_piece_tokens(word_toks, word2tfidf)
+
+            tfidf_lst = get_tfidf_weights(new_word_toks, vecs, word2tfidf)
+
+            tfidf_weights = torch.tensor(tfidf_lst, device=('cuda' if use_cuda else 'cpu'))  # (B, L)
             tfidf_weights = tfidf_weights.unsqueeze(2).repeat(1, 1, vecs.shape[2])
             weighted_vecs = torch.einsum('blh,blh->blh', vecs, tfidf_weights)
 
@@ -285,15 +336,15 @@ if __name__ == '__main__':
         print("Getting cluster assignments")
         X, Y = load_vector_data(args['data_path'], docname=args['doc_name'], topicname=args['topic_name'],
                                 dataname='train', dataloader=dataloader, mode='concat')
-        get_cluster_labels('bert_tfidfW', 197, X, Y, 'train')
+        get_cluster_labels('bert_tfidfW', int(args['k']), X, Y, 'train')
 
         X, Y = load_vector_data(args['data_path'], docname=args['doc_name'], topicname=args['topic_name'],
                                 dataname='dev', dataloader=dev_dataloader, mode='concat')
-        get_cluster_labels('bert_tfidfW', 197, X, Y, 'dev')
+        get_cluster_labels('bert_tfidfW', int(args['k']), X, Y, 'dev')
 
         X, Y = load_vector_data(args['data_path'], docname=args['doc_name'], topicname=args['topic_name'],
                                 dataname='test', dataloader=test_dataloader, mode='concat')
-        get_cluster_labels('bert_tfidfW', 197, X, Y, 'test')
+        get_cluster_labels('bert_tfidfW', int(args['k']), X, Y, 'test')
 
 
 

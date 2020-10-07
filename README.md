@@ -1,62 +1,3 @@
-#Software for 'Zero-Shot Stance Detection: A Dataset and Model Using Generalized Topic Representations'
-Submission to EMNLP 2020
-
-## Directory Structure
-Download and unzip the data and place it inside the software directory.
-Then the structure should be:  
-.  
-+-- data   
-|  +-- mpqa  
-|  |  +-- subjclueslen1-HLTEMNLP05.README  
-|  |  +-- subjclueslen1-HLTEMNLP05.tff  
-|  +-- VAST  
-|  |  +-- vast_train.csv  
-|  |  +-- vast_dev.csv  
-|  |  +-- vast_test.csv 
-|  |  +-- vast_test-sentswap.csv   
-+-- config  
-|  |  +-- config-bert-joint.txt  
-|  |  +-- config-bert-sep.txt  
-|  |  +-- config-bicond.txt  
-|  |  +-- config-crossnet.txt  
-|  |  +-- config-cffnn.txt  
-|  |  +-- config-tganet.txt  
-|  |  +-- hyperparam-bert-joint.txt  
-|  |  +-- hyperparam-bert-sep.txt  
-|  |  +-- hyperparam-bicond.txt  
-|  |  +-- hyperparam-crossnet.txt  
-|  |  +-- hyperparam-cffnn.txt  
-|  |  +-- hyperparam-tganet.txt  
-+-- checkpoints   
-+-- resources  
-|  +-- topicreps  
-|  |  +-- bert_tfidfW_ward_euclidean_197.centroids.npy  
-|  |  +-- bert_tfidfW_ward_euclidean_197-dev.labels.pkl  
-|  |  +-- bert_tfidfW_ward_euclidean_197-train.labels.pkl  
-|  |  +-- bert_tfidfW_ward_euclidean_197-test.labels.pkl  
-|  +-- glove.6B.100d.vectors.npy  
-|  +-- glove.6B.100d.vocab.pkl  
-|  +-- text_vocab_top10000.txt  
-|  +-- topic_vocab.txt     
-+-- src  
-|  +--clustering  
-|  |  +-- stance_clustering.py   
-|  |  +-- gen_reps.sh  
-|  +-- modeling    
-|  |  +-- models.py   
-|  |  +-- model_layers.py  
-|  |  +-- data_utils.py    
-|  |  +-- datasets.py  
-|  |  +-- input_models.py  
-|  |  +-- model_utils.py  
-|  |  +-- eval_model.py   
-|  |  +-- baselines.py   
-|  +-- train_model.py  
-|  +-- hyperparam_selection.py  
-|  +-- train.sh  
-|  +-- README.md
-
-
 ## Requirements
 python                    3.7.6  
 scikit-learn              0.22.1  
@@ -127,12 +68,12 @@ python baselines.py -m "eval" -i vast_train.csv -d vast_test.csv -t "cmaj"
 Run
 ```angular2html
 cd src/
-python hyperparameter_selection.py -m 1 -k <optimization_key> -s <config_name>
+python hyperparam_selection.py -m 1 -k <optimization_key> -s <config_name>
 ```
 
 For example
 ```angular2html
-python hyperparameter_selection.py -m 1 -k "f-0_macro" -s ../config/hyperparam-tganet.txt
+python hyperparam_selection.py -m 1 -k "f-0_macro" -s ../config/hyperparam-tganet.txt
 ```
 
 ## Generate Generalized Topic Representations
