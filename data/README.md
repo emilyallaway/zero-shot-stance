@@ -1,6 +1,3 @@
-# Data for 'Zero-Shot Stance Detection: A Dataset and Model Using Generalized Topic Representations'
-Submission to EMNLP 2020
-
 ## VAST: Varied Stance Topics Data
 New data released in this submission.
 Short column descriptions
