@@ -17,7 +17,13 @@ Short column descriptions
 - seen?: indicator for zero-shot or few-shot example, 0=zero-shot, 1=few-shot
 - contains_topic?: indicator for whether topic is contained in the text, 0=no, 1=yes  
 - change_lst: list of swapped words (unique to vast_test-sentswap.csv)  
-- change_type: type of sentiment swapping
+- change_type: type of sentiment swapping  
+- LexSim: a list of lexically similar training topics (if a zero-shot topic)  
+- Qte: whether the example contains quotes (1=yes, 0=no)  
+- Sarc: whether the example contains sarcasm (1=yes, 0=no)  
+- Imp: whether the text contains the topic and the label is non-neutral (1=yes, 0=no)  
+- mlS: whether there are other examples with the same document and different, non-neutral, stance labels (1=yes, 0=no)  
+- mlT: whether there are other examples with the same document and different topics (1=yes, 0=no)
 
 ## MPQA
 Existing sentiment lexicon. See mpqa/subjclueslen1-HLTEMNLP05.README
