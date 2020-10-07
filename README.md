@@ -1,3 +1,16 @@
+# Zero-Shot Stance Detection: A Dataset and Model using Generalized Topic Representations
+
+Paper link: [TODO]  
+Please cite:
+```angular2html
+@inproceedings{Allaway2020Zero,
+  title={Zero-Shot Stance Detection: A Dataset and Model using Generalized Topic Representations},
+  author={Emily Allaway and Kathleen McKeown},
+  booktitle={Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing},
+  year={2020}
+}
+```
+
 ## Requirements
 python                    3.7.6  
 scikit-learn              0.22.1  
@@ -82,3 +95,6 @@ Run
 cd src/clustering/
 ./gen_reps.sh
 ```
+
+## Contact Info
+Please contact [Emily Allaway](http://www.cs.columbia.edu/~eallaway/) at [eallaway@cs.columbia.edu](eallaway@cs.columbia.edu) with an questions.
